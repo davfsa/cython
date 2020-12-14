@@ -20,13 +20,12 @@ from Cython.Build.Dependencies import cythonize
 from distutils.core import setup
 
 # Test concurrent safety if multiprocessing is available.
-# (In particular, TravisCI does not support spawning processes from tests.)
 nthreads = 0
 if not hasattr(sys, 'pypy_version_info'):
     try:
         import multiprocessing
-        multiprocessing.Pool(2).close()
-        nthreads = 2
+        multiprocessing.Pool(4).close()
+        nthreads = 4
     except (ImportError, OSError):
         pass
 
