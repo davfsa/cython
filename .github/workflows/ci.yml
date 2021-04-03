@@ -25,84 +25,84 @@ jobs:
         # in all python versions and test failures (builtin_float) in 3.5<
         os: [ubuntu-18.04]
         backend: [c, cpp]
-        python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10-dev]
+        python-version: [2.7]
 
-        include:
-          # Ubuntu sub-jobs:
-          # ================
-          # Linting
-          - os: ubuntu-18.04
-            python-version: 3.7
-            backend: "c,cpp"
-            env: { TEST_CODE_STYLE: 1 }
-            extra_hash: "-codestyle"
-          # Limited API
-          - os: ubuntu-18.04
-            python-version: 3.6
-            backend: "c,cpp"
-            env: { LIMITED_API: "--limited-api", EXCLUDE: "--no-file" }
-            extra_hash: "-limited_api"
-          - os: ubuntu-18.04
-            python-version: 3.7
-            backend: "c,cpp"
-            env: { LIMITED_API: "--limited-api", EXCLUDE: "--no-file" }
-            extra_hash: "-limited_api"
-          - os: ubuntu-18.04
-            python-version: 3.8
-            backend: "c,cpp"
-            env: { LIMITED_API: "--limited-api", EXCLUDE: "--no-file" }
-            extra_hash: "-limited_api"
-          # Stackless
-          - os: ubuntu-18.04
-            python-version: 2.7
-            backend: c
-            env: { STACKLESS: true, PY: 2 }
-            extra_hash: "-stackless"
-          - os: ubuntu-18.04
-            python-version: 3.6
-            backend: c
-            env: { STACKLESS: true, PY: 3 }
-            extra_hash: "-stackless"
-          # Pypy
-          - os: ubuntu-18.04
-            python-version: pypy-2.7
-            backend: c
-          - os: ubuntu-18.04
-            python-version: pypy-3.7
-            backend: c
-          # Pypy [allowed-failures] - These specifically test known bugs
-          - os: ubuntu-18.04
-            python-version: pypy-2.7
-            backend: c
-            env:
-              {
-                EXCLUDE: "--listfile=tests/pypy_bugs.txt --listfile=tests/pypy2_bugs.txt bugs",
-              }
-            allowed_failure: true
-            extra_hash: "-allowed_failures"
-          - os: ubuntu-18.04
-            python-version: pypy-3.7
-            backend: c
-            env: { EXCLUDE: "--listfile=tests/pypy_bugs.txt bugs" }
-            allowed_failure: true
-            extra_hash: "-allowed_failures"
-          # Coverage - Disabled due to taking too long to run
-          # - os: ubuntu-18.04
-          #   python-version: 3.7
-          #   backend: "c,cpp"
-          #   env: { COVERAGE: 1 }
-          #   extra_hash: '-coverage'
+#         include:
+#           # Ubuntu sub-jobs:
+#           # ================
+#           # Linting
+#           - os: ubuntu-18.04
+#             python-version: 3.7
+#             backend: "c,cpp"
+#             env: { TEST_CODE_STYLE: 1 }
+#             extra_hash: "-codestyle"
+#           # Limited API
+#           - os: ubuntu-18.04
+#             python-version: 3.6
+#             backend: "c,cpp"
+#             env: { LIMITED_API: "--limited-api", EXCLUDE: "--no-file" }
+#             extra_hash: "-limited_api"
+#           - os: ubuntu-18.04
+#             python-version: 3.7
+#             backend: "c,cpp"
+#             env: { LIMITED_API: "--limited-api", EXCLUDE: "--no-file" }
+#             extra_hash: "-limited_api"
+#           - os: ubuntu-18.04
+#             python-version: 3.8
+#             backend: "c,cpp"
+#             env: { LIMITED_API: "--limited-api", EXCLUDE: "--no-file" }
+#             extra_hash: "-limited_api"
+#           # Stackless
+#           - os: ubuntu-18.04
+#             python-version: 2.7
+#             backend: c
+#             env: { STACKLESS: true, PY: 2 }
+#             extra_hash: "-stackless"
+#           - os: ubuntu-18.04
+#             python-version: 3.6
+#             backend: c
+#             env: { STACKLESS: true, PY: 3 }
+#             extra_hash: "-stackless"
+#           # Pypy
+#           - os: ubuntu-18.04
+#             python-version: pypy-2.7
+#             backend: c
+#           - os: ubuntu-18.04
+#             python-version: pypy-3.7
+#             backend: c
+#           # Pypy [allowed-failures] - These specifically test known bugs
+#           - os: ubuntu-18.04
+#             python-version: pypy-2.7
+#             backend: c
+#             env:
+#               {
+#                 EXCLUDE: "--listfile=tests/pypy_bugs.txt --listfile=tests/pypy2_bugs.txt bugs",
+#               }
+#             allowed_failure: true
+#             extra_hash: "-allowed_failures"
+#           - os: ubuntu-18.04
+#             python-version: pypy-3.7
+#             backend: c
+#             env: { EXCLUDE: "--listfile=tests/pypy_bugs.txt bugs" }
+#             allowed_failure: true
+#             extra_hash: "-allowed_failures"
+#           # Coverage - Disabled due to taking too long to run
+#           # - os: ubuntu-18.04
+#           #   python-version: 3.7
+#           #   backend: "c,cpp"
+#           #   env: { COVERAGE: 1 }
+#           #   extra_hash: '-coverage'
 
-          # MacOS sub-jobs
-          # ==============
-          - os: macos-10.15
-            python-version: 2.7
-            backend: "c,cpp"
-            env: { MACOSX_DEPLOYMENT_TARGET: 10.14 }
-          - os: macos-10.15
-            python-version: 3.8
-            backend: "c,cpp"
-            env: { MACOSX_DEPLOYMENT_TARGET: 10.14 }
+#           # MacOS sub-jobs
+#           # ==============
+#           - os: macos-10.15
+#             python-version: 2.7
+#             backend: "c,cpp"
+#             env: { MACOSX_DEPLOYMENT_TARGET: 10.14 }
+#           - os: macos-10.15
+#             python-version: 3.8
+#             backend: "c,cpp"
+#             env: { MACOSX_DEPLOYMENT_TARGET: 10.14 }
 
     runs-on: ${{ matrix.os }}
 
@@ -135,5 +135,5 @@ jobs:
 
       - name: Run CI
         continue-on-error: ${{ matrix.allowed_failure || false }}
-        env: ${{ matrix.env || toJSON(0) }}
+        env: ${{ matrix.env || false }}
         run: bash ./Tools/ci-run.sh
