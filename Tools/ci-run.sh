@@ -51,7 +51,7 @@ echo "===================="
 # Install python requirements
 echo "Installing requirements [python]"
 if [ -z "${PYTHON_VERSION##2.7}" ]; then
-  pip install -r test-requirements-27.txt || exit 1
+  python -m pip install -r test-requirements-27.txt || exit 1
 
 elif [ -n "${PYTHON_VERSION##*-dev}" ]; then
   python -m pip install -r test-requirements.txt || exit 1

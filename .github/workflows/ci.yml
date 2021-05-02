@@ -201,8 +201,12 @@ jobs:
       - name: Run CI
         run: |
           docker run --rm -t -v ${{ github.workspace }}:/cython -v /ccache:/ccache --workdir=/cython \
-          ${{ matrix.arch }}/alpine /bin/bash -c "
+          ${{ matrix.arch }}/debian /bin/bash -c "
           apt update -y -q
           apt install -q -y software-properties-common
-          update-alternatives --install /usr/bin/python python /opt/python/cp38-cp38/bin/python 60
+
+          add-apt-repository -y -u ppa:deadsnakes/ppa
+          apt install -q -y python3.8 python3.8-dev python3-pip
+          update-alternatives --install /usr/bin/python python /usr/bin/python3.8 60
+
           bash ./Tools/ci-run.sh"
